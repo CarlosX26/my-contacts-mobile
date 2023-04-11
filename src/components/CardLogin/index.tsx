@@ -4,6 +4,7 @@ import {
   FormControl,
   Heading,
   Input,
+  Link,
   Stack,
   Text,
 } from "native-base"
@@ -20,12 +21,12 @@ export const CardLogin = () => {
               <Input
                 variant="rounded"
                 type="text"
-                placeholder="Digite seu Email"
+                placeholder="Digite seu email"
               />
             </Stack>
 
             <Stack>
-              <FormControl.Label>Password</FormControl.Label>
+              <FormControl.Label>Senha</FormControl.Label>
               <Input
                 variant="rounded"
                 type="password"
@@ -42,6 +43,16 @@ export const CardLogin = () => {
                 Login
               </Text>
             </Button>
+
+            <Box flexDir="row">
+              <Text>Não possui cadastro?</Text>
+
+              <Link>
+                <Text color="cyan.600" pl="4px">
+                  cadastre-se
+                </Text>
+              </Link>
+            </Box>
           </Stack>
         </FormControl>
       </Stack>
