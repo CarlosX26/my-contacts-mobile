@@ -9,7 +9,11 @@ import {
   Text,
 } from "native-base"
 
-export const CardLogin = () => {
+interface CardLoginProps {
+  toggleCard(card: string): void
+}
+
+export const CardLogin = ({ toggleCard }: CardLoginProps) => {
   return (
     <Box bg="gray.100" p="16px" borderRadius="8px">
       <Stack space="16px">
@@ -47,7 +51,7 @@ export const CardLogin = () => {
             <Box flexDir="row">
               <Text>Não possui cadastro?</Text>
 
-              <Link>
+              <Link onPress={() => toggleCard("register")}>
                 <Text color="cyan.600" pl="4px">
                   cadastre-se
                 </Text>
