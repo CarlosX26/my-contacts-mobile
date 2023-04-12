@@ -8,12 +8,60 @@ import {
   Stack,
   Text,
 } from "native-base"
+import { Controller, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 
 interface CardRegisterProps {
   toggleCard(card: string): void
 }
 
+const RegisterSchema = z.object({
+  name: z
+    .string({
+      required_error: "Campo vazio",
+    })
+    .min(3, "Mínimo 3 caractere")
+    .max(128, "Máximo 128 caractere"),
+  email: z
+    .string({
+      required_error: "Campo vazio",
+    })
+    .email({
+      message: "Email inválido",
+    }),
+  phoneNumber: z
+    .string({
+      required_error: "Campo vazio",
+    })
+    .min(11, "Número inválido")
+    .max(11, "Número inválido"),
+  password: z
+    .string({
+      required_error: "Campo vazio",
+    })
+    .regex(/[A-Z]/, "Mínimo de 1 letra maiúscula.")
+    .regex(/[a-z]/, "Mínimo de 1 letra minuscula.")
+    .regex(/(\d)/, "Mínimo 1 número.")
+    .regex(/(\W)|_/, "Mínimo de 1 caractere especial.")
+    .regex(/(.{8,})|_/, "Mínimo de 8 caracteres."),
+})
+
+type Register = z.infer<typeof RegisterSchema>
+
 export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Register>({
+    resolver: zodResolver(RegisterSchema),
+  })
+
+  const submit = (data: Register) => {
+    console.log(data)
+  }
+
   return (
     <Box bg="gray.100" p="16px" borderRadius="8px">
       <Stack space="16px">
@@ -22,39 +70,94 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
           <Stack space="16px">
             <Stack>
               <FormControl.Label>Nome</FormControl.Label>
-              <Input
-                variant="rounded"
-                type="text"
-                placeholder="Digite seu nome"
+              <Controller
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    variant="rounded"
+                    type="text"
+                    placeholder="Digite seu nome"
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="name"
               />
             </Stack>
+            {errors.name && (
+              <Text color="red.400" fontSize="12px">
+                * {errors.name.message}
+              </Text>
+            )}
             <Stack>
               <FormControl.Label>Email</FormControl.Label>
-              <Input
-                variant="rounded"
-                type="text"
-                placeholder="Digite seu email"
+              <Controller
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    variant="rounded"
+                    type="text"
+                    placeholder="Digite seu email"
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="email"
               />
             </Stack>
+            {errors.email && (
+              <Text color="red.400" fontSize="12px">
+                * {errors.email.message}
+              </Text>
+            )}
             <Stack>
               <FormControl.Label>Telefone</FormControl.Label>
-              <Input
-                variant="rounded"
-                type="text"
-                placeholder="Digite seu número de telefone"
+              <Controller
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    variant="rounded"
+                    type="text"
+                    placeholder="Digite seu número de telefone"
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="phoneNumber"
               />
             </Stack>
-
+            {errors.phoneNumber && (
+              <Text color="red.400" fontSize="12px">
+                * {errors.phoneNumber.message}
+              </Text>
+            )}
             <Stack>
               <FormControl.Label>Senha</FormControl.Label>
-              <Input
-                variant="rounded"
-                type="password"
-                placeholder="Digite sua senha"
+              <Controller
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Input
+                    variant="rounded"
+                    type="password"
+                    placeholder="Digite sua senha"
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                )}
+                name="password"
               />
             </Stack>
+            {errors.password && (
+              <Text color="red.400" fontSize="12px">
+                * {errors.password.message}
+              </Text>
+            )}
 
-            <Button borderRadius="full" bg="cyan.600">
+            <Button
+              borderRadius="full"
+              bg="cyan.600"
+              onPress={handleSubmit(submit)}
+            >
               <Text
                 fontWeight="bold"
                 textTransform="uppercase"
