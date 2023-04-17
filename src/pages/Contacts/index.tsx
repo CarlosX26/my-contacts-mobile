@@ -1,5 +1,12 @@
-import { Box } from "native-base"
+import { View } from "native-base"
+import { ContactList } from "../../components/ContactList"
+import { NavBar } from "../../components/NavBar"
 
 export const Contacts = () => {
-  return <Box>Contacts</Box>
+  return (
+    <View h="100%">
+      <NavBar />
+      <ContactList />
+    </View>
+  )
 }
