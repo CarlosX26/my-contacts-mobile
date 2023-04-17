@@ -1,15 +1,12 @@
 import { Avatar, Box, Button, HStack, Heading, Text, Icon } from "native-base"
 import { Feather } from "@expo/vector-icons"
+import { Contact } from "../../contexts/contacts"
 
-// interface CardContactProps {
-//   fullName: string
-//   email: string
-//   phoneNumber: string
-//   createdAt: string
-//   id: number
-// }
+interface CardContactProps {
+  contact: Contact
+}
 
-export const CardContact = () => {
+export const CardContact = ({ contact }: CardContactProps) => {
   return (
     <HStack
       bg="gray.100"
@@ -18,11 +15,16 @@ export const CardContact = () => {
       p="16px"
       borderRadius="8px"
     >
-      <Avatar>{"fullName"}</Avatar>
+      <Avatar>
+        {contact.fullName
+          .split(" ")
+          .map((e) => e.split("")[0])
+          .join("")}
+      </Avatar>
       <Box>
-        <Heading>{"fullName"}</Heading>
-        <Text>{"email"}</Text>
-        <Text>{"phoneNumber"}</Text>
+        <Heading>{contact.fullName}</Heading>
+        <Text>{contact.email}</Text>
+        <Text>{contact.phoneNumber}</Text>
       </Box>
       <Button
         position="absolute"
