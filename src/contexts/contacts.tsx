@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../services/api"
 
 interface ContactsContext {
@@ -30,9 +31,10 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
 
   const getContacts = async () => {
     try {
+      const token = await AsyncStorage.getItem("@myContactsToken")
       const { data } = await api.get("/contacts", {
         headers: {
-          Authorization: "",
+          Authorization: `Bearer ${token}`,
         },
       })
       setContacts(data)
