@@ -12,7 +12,7 @@ import {
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useContactsContext } from "../../contexts/contacts"
+import { useAuthContext } from "../../contexts/auth"
 
 interface CardRegisterProps {
   toggleCard(card: string): void
@@ -52,7 +52,7 @@ const RegisterSchema = z.object({
 export type Register = z.infer<typeof RegisterSchema>
 
 export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
-  const { register } = useContactsContext()
+  const { register } = useAuthContext()
   const {
     control,
     handleSubmit,
