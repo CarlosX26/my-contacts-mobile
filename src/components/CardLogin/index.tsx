@@ -12,7 +12,7 @@ import {
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useContactsContext } from "../../contexts/contacts"
+import { useAuthContext } from "../../contexts/auth"
 
 interface CardLoginProps {
   toggleCard(card: string): void
@@ -34,7 +34,7 @@ const LoginSchema = z.object({
 export type Login = z.infer<typeof LoginSchema>
 
 export const CardLogin = ({ toggleCard }: CardLoginProps) => {
-  const { login } = useContactsContext()
+  const { login } = useAuthContext()
 
   const {
     control,
