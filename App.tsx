@@ -1,8 +1,7 @@
 import { NativeBaseProvider, StatusBar } from "native-base"
-import { Home } from "./src/pages/Home"
 import { useFonts } from "expo-font"
 import { theme } from "./src/styles/theme"
-import { ContactsProvider } from "./src/contexts/contacts"
+import { Routes } from "./src/routes"
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -19,9 +18,7 @@ export default function App() {
   return (
     <NativeBaseProvider theme={theme}>
       <StatusBar />
-      <ContactsProvider>
-        <Home />
-      </ContactsProvider>
+      <Routes />
     </NativeBaseProvider>
   )
 }
