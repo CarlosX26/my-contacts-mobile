@@ -1,6 +1,9 @@
-import { Avatar, Box, Heading } from "native-base"
+import { Avatar, Box, Heading, Menu, Pressable } from "native-base"
+import { useAuthContext } from "../../contexts/auth"
 
 export const NavBar = () => {
+  const { logout } = useAuthContext()
+
   return (
     <Box
       bg="cyan.600"
@@ -11,7 +14,18 @@ export const NavBar = () => {
       h="10%"
     >
       <Heading color="gray.100">My Contacts</Heading>
-      <Avatar bg="green.400">CJ</Avatar>
+      <Menu
+        trigger={(triggerProps) => {
+          return (
+            <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+              <Avatar bg="green.400">CJ</Avatar>
+            </Pressable>
+          )
+        }}
+      >
+        <Menu.Item>Ver perfil</Menu.Item>
+        <Menu.Item onPress={logout}>Sair</Menu.Item>
+      </Menu>
     </Box>
   )
 }
