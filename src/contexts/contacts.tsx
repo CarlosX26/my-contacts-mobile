@@ -1,14 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { useNavigation } from "@react-navigation/native"
+import { ContactSchema } from "../components/ModalContact"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../services/api"
-import { ContactSchema } from "../components/ModalContact"
 
 interface ContactsContext {
   contacts: Contact[]
   createContact(contactData: ContactSchema): Promise<void>
   showModal: boolean
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  deleteContact(contactId: string): Promise<void>
 }
 
 interface ContactsProviderProps {
@@ -36,7 +37,7 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
     })()
   }, [])
 
-  const getContacts = async () => {
+  const getContacts = async (): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")
       const { data } = await api.get("/contacts", {
@@ -51,7 +52,7 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
     }
   }
 
-  const createContact = async (contactData: ContactSchema) => {
+  const createContact = async (contactData: ContactSchema): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")
       const { data } = await api.post("/contacts", contactData, {
@@ -66,9 +67,30 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
     }
   }
 
+  const deleteContact = async (contactId: string): Promise<void> => {
+    try {
+      const token = await AsyncStorage.getItem("@myContactsToken")
+      await api.delete(`/contacts/${contactId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const removedContact = contacts.filter((e) => e.id !== contactId)
+      setContacts(removedContact)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <contactsContext.Provider
-      value={{ contacts, createContact, showModal, setShowModal }}
+      value={{
+        contacts,
+        createContact,
+        showModal,
+        setShowModal,
+        deleteContact,
+      }}
     >
       {children}
     </contactsContext.Provider>
