@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { Home } from "../pages/Home"
 import { Contacts } from "../pages/Contacts"
 import { AuthProvider } from "../contexts/auth"
+import { UserProvider } from "../contexts/user"
 
 export type RootStackParamList = {
   Home: undefined
@@ -15,13 +16,15 @@ export const Routes = () => {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Contacts" component={Contacts} />
-        </Stack.Navigator>
+        <UserProvider>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Contacts" component={Contacts} />
+          </Stack.Navigator>
+        </UserProvider>
       </AuthProvider>
     </NavigationContainer>
   )

@@ -1,8 +1,10 @@
 import { Avatar, Box, Heading, Menu, Pressable } from "native-base"
 import { useAuthContext } from "../../contexts/auth"
+import { useUserContext } from "../../contexts/user"
 
 export const NavBar = () => {
   const { logout } = useAuthContext()
+  const { setShowModal } = useUserContext()
 
   return (
     <Box
@@ -10,8 +12,7 @@ export const NavBar = () => {
       flexDir="row"
       justifyContent="space-between"
       alignItems="center"
-      p="16px"
-      h="10%"
+      p="4"
     >
       <Heading color="gray.100">My Contacts</Heading>
       <Menu
@@ -23,7 +24,7 @@ export const NavBar = () => {
           )
         }}
       >
-        <Menu.Item>Ver perfil</Menu.Item>
+        <Menu.Item onPress={() => setShowModal(true)}>Ver perfil</Menu.Item>
         <Menu.Item onPress={logout}>Sair</Menu.Item>
       </Menu>
     </Box>

@@ -54,11 +54,11 @@ export const CardLogin = ({ toggleCard }: CardLoginProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <Box bg="gray.100" p="16px" borderRadius="8px">
-        <Stack space="16px">
+      <Box bg="gray.100" p="4" borderRadius="lg">
+        <Stack space="4">
           <Heading>Login</Heading>
           <FormControl>
-            <Stack space="16px">
+            <Stack space="4">
               <Stack>
                 <FormControl.Label>Email</FormControl.Label>
                 <Controller
@@ -76,7 +76,7 @@ export const CardLogin = ({ toggleCard }: CardLoginProps) => {
                 />
               </Stack>
               {errors.email && (
-                <Text color="red.400" fontSize="12px">
+                <Text color="red.400" fontSize="md">
                   * {errors.email.message}
                 </Text>
               )}
@@ -98,7 +98,7 @@ export const CardLogin = ({ toggleCard }: CardLoginProps) => {
                 />
               </Stack>
               {errors.password && (
-                <Text color="red.400" fontSize="12px">
+                <Text color="red.400" fontSize="md">
                   * {errors.password.message}
                 </Text>
               )}
@@ -121,7 +121,7 @@ export const CardLogin = ({ toggleCard }: CardLoginProps) => {
                 <Text>Não possui cadastro?</Text>
 
                 <Link onPress={() => toggleCard("register")}>
-                  <Text color="cyan.600" pl="4px">
+                  <Text color="cyan.600" pl="1">
                     cadastre-se
                   </Text>
                 </Link>

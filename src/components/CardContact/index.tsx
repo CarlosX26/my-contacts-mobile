@@ -8,13 +8,7 @@ interface CardContactProps {
 
 export const CardContact = ({ contact }: CardContactProps) => {
   return (
-    <HStack
-      bg="gray.100"
-      space="16px"
-      position="relative"
-      p="16px"
-      borderRadius="8px"
-    >
+    <HStack bg="gray.100" space="4" position="relative" p="4" borderRadius="lg">
       <Avatar>
         {contact.fullName
           .split(" ")
@@ -28,8 +22,8 @@ export const CardContact = ({ contact }: CardContactProps) => {
       </Box>
       <Button
         position="absolute"
-        top="8px"
-        right="8px"
+        top="2"
+        right="2"
         bg="gray.200"
         _pressed={{ bg: "gray.300" }}
       >

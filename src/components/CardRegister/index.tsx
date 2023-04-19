@@ -19,7 +19,7 @@ interface CardRegisterProps {
 }
 
 const RegisterSchema = z.object({
-  name: z
+  fullName: z
     .string({
       required_error: "Campo vazio",
     })
@@ -71,11 +71,11 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <Box bg="gray.100" p="16px" borderRadius="8px">
-        <Stack space="16px">
+      <Box bg="gray.100" p="4" borderRadius="lg">
+        <Stack space="4">
           <Heading>Cadastro</Heading>
           <FormControl>
-            <Stack space="16px">
+            <Stack space="4">
               <Stack>
                 <FormControl.Label>Nome</FormControl.Label>
                 <Controller
@@ -89,12 +89,12 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
                       value={value}
                     />
                   )}
-                  name="name"
+                  name="fullName"
                 />
               </Stack>
-              {errors.name && (
-                <Text color="red.400" fontSize="12px">
-                  * {errors.name.message}
+              {errors.fullName && (
+                <Text color="red.400" fontSize="md">
+                  * {errors.fullName.message}
                 </Text>
               )}
               <Stack>
@@ -114,7 +114,7 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
                 />
               </Stack>
               {errors.email && (
-                <Text color="red.400" fontSize="12px">
+                <Text color="red.400" fontSize="md">
                   * {errors.email.message}
                 </Text>
               )}
@@ -135,7 +135,7 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
                 />
               </Stack>
               {errors.phoneNumber && (
-                <Text color="red.400" fontSize="12px">
+                <Text color="red.400" fontSize="md">
                   * {errors.phoneNumber.message}
                 </Text>
               )}
@@ -156,7 +156,7 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
                 />
               </Stack>
               {errors.password && (
-                <Text color="red.400" fontSize="12px">
+                <Text color="red.400" fontSize="md">
                   * {errors.password.message}
                 </Text>
               )}
@@ -179,7 +179,7 @@ export const CardRegister = ({ toggleCard }: CardRegisterProps) => {
                 <Text>Já possui cadastro?</Text>
 
                 <Link onPress={() => toggleCard("login")}>
-                  <Text color="cyan.600" pl="4px">
+                  <Text color="cyan.600" pl="1">
                     login
                   </Text>
                 </Link>
