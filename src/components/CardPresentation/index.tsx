@@ -6,8 +6,8 @@ interface CardPresentationProps {
 
 export const CardPresentation = ({ toggleCard }: CardPresentationProps) => {
   return (
-    <Box bg="gray.100" p="16px" borderRadius="8px">
-      <Stack space="16px">
+    <Box bg="gray.100" p="4" borderRadius="lg">
+      <Stack space="4">
         <Heading>My Contacts</Heading>
 
         <Text>Gerencie seus contatos de um jeito inovador.</Text>
