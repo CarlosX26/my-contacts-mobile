@@ -50,7 +50,7 @@ export const ModalContact = () => {
   const submit = async (data: ContactSchema) => {
     createContact(data)
   }
-  console.log(errors)
+
   return (
     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
       <Modal.Content marginBottom="auto" top="20">
