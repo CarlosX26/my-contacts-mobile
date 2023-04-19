@@ -1,4 +1,4 @@
-import { Box } from "native-base"
+import { View } from "native-base"
 import { CardPresentation } from "../../components/CardPresentation"
 import { CardLogin } from "../../components/CardLogin"
 import { CardRegister } from "../../components/CardRegister"
@@ -12,11 +12,11 @@ export const Home = () => {
   }
 
   return (
-    <Box bg="gray.600" h="100%" px="16px" justifyContent="center">
+    <View bg="gray.600" h="100%" px="4" justifyContent="center">
       {!card && <CardPresentation toggleCard={toggleCard} />}
 
       {card === "login" && <CardLogin toggleCard={toggleCard} />}
       {card === "register" && <CardRegister toggleCard={toggleCard} />}
-    </Box>
+    </View>
   )
 }
