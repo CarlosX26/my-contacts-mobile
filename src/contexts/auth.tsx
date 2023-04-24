@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useState } from "react"
 import { Login } from "../components/CardLogin"
 import { Register } from "../components/CardRegister"
 import { useNavigation } from "@react-navigation/native"
@@ -9,6 +9,8 @@ interface AuthContext {
   login(dataLogin: Login): Promise<void>
   register(dataRegister: Register): Promise<void>
   logout(): Promise<void>
+  card: string
+  toggleCard(card: string): void
 }
 
 interface AuthProviderProps {
@@ -18,6 +20,12 @@ interface AuthProviderProps {
 const authContext = createContext({} as AuthContext)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [card, setCard] = useState("")
+
+  const toggleCard = (card: string) => {
+    setCard(card)
+  }
+
   const { navigate } = useNavigation()
 
   const login = async (dataLogin: Login): Promise<void> => {
@@ -41,7 +49,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           "Content-Type": "application/json",
         },
       })
-      console.log(data)
+      toggleCard("login")
     } catch (error) {
       console.log(error)
     }
@@ -53,7 +61,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   return (
-    <authContext.Provider value={{ login, register, logout }}>
+    <authContext.Provider value={{ login, register, logout, card, toggleCard }}>
       {children}
     </authContext.Provider>
   )
