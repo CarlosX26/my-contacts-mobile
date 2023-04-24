@@ -14,10 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useAuthContext } from "../../contexts/auth"
 
-interface CardLoginProps {
-  toggleCard(card: string): void
-}
-
 const LoginSchema = z.object({
   email: z
     .string({
@@ -33,8 +29,8 @@ const LoginSchema = z.object({
 
 export type Login = z.infer<typeof LoginSchema>
 
-export const CardLogin = ({ toggleCard }: CardLoginProps) => {
-  const { login } = useAuthContext()
+export const CardLogin = () => {
+  const { login, toggleCard } = useAuthContext()
 
   const {
     control,
