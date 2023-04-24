@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react"
 import { Login } from "../components/CardLogin"
 import { Register } from "../components/CardRegister"
 import { useNavigation } from "@react-navigation/native"
+import { useToast } from "native-base"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../services/api"
 
@@ -21,12 +22,12 @@ const authContext = createContext({} as AuthContext)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [card, setCard] = useState("")
+  const toast = useToast()
+  const { navigate } = useNavigation()
 
   const toggleCard = (card: string) => {
     setCard(card)
   }
-
-  const { navigate } = useNavigation()
 
   const login = async (dataLogin: Login): Promise<void> => {
     try {
@@ -44,10 +45,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (dataRegister: Register): Promise<void> => {
     try {
-      const { data } = await api.post("/clients", dataRegister, {
+      await api.post("/clients", dataRegister, {
         headers: {
           "Content-Type": "application/json",
         },
+      })
+      toast.show({
+        title: "Cadastro realizado",
       })
       toggleCard("login")
     } catch (error) {
