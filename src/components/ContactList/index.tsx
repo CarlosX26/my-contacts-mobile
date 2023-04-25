@@ -4,7 +4,7 @@ import { useContactsContext } from "../../contexts/contacts"
 import { Feather } from "@expo/vector-icons"
 
 export const ContactList = () => {
-  const { contacts, setShowModal } = useContactsContext()
+  const { contacts, setShowModalNewContact } = useContactsContext()
 
   return (
     <Box bg="gray.600" p="4" flex="1">
@@ -22,7 +22,7 @@ export const ContactList = () => {
         bottom="4"
         right="4"
         borderRadius="full"
-        onPress={() => setShowModal(true)}
+        onPress={() => setShowModalNewContact(true)}
       >
         <Icon as={Feather} name="user-plus" color="gray.100" size="xl" />
       </Button>

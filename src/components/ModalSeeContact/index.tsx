@@ -6,63 +6,80 @@ import {
   Stack,
   VStack,
   Text,
+  Avatar,
+  Heading,
 } from "native-base"
-import { z } from "zod"
 import { useContactsContext } from "../../contexts/contacts"
 import { Controller, useForm } from "react-hook-form"
+import { ContactSchema } from "../ModalContact"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
 
-export const ContactSchema = z.object({
-  fullName: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .max(128, "Máximo 128 caractere")
-    .nonempty("Campo vazio"),
-  email: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .email()
-    .max(128, "Máximo 128 caractere")
-    .nonempty("Campo vazio"),
-  phoneNumber: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .min(11, "Número inválido")
-    .max(11, "Número inválido")
-    .nonempty("Campo vazio"),
-})
+export const ModalSeeContact = () => {
+  const {
+    showModalSeeContact,
+    setShowModalSeeContact,
+    currentContact,
+    updateContact,
+  } = useContactsContext()
+  const [showForm, setShowForm] = useState(false)
 
-export type ContactSchema = z.infer<typeof ContactSchema>
-
-export const ModalContact = () => {
-  const { createContact, showModalNewContact, setShowModalNewContact } =
-    useContactsContext()
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<ContactSchema>({
     resolver: zodResolver(ContactSchema),
+    values: {
+      email: currentContact?.email!,
+      fullName: currentContact?.fullName!,
+      phoneNumber: currentContact?.phoneNumber!,
+    },
   })
 
   const submit = async (data: ContactSchema) => {
-    createContact(data)
+    await updateContact(currentContact?.id!, data)
+    setShowForm(false)
   }
 
   return (
     <Modal
-      isOpen={showModalNewContact}
-      onClose={() => setShowModalNewContact(false)}
+      isOpen={showModalSeeContact}
+      onClose={() => setShowModalSeeContact(false)}
     >
       <Modal.Content marginBottom="auto" top="20">
         <Modal.CloseButton />
-        <Modal.Header>Adicionar contato</Modal.Header>
+        <Modal.Header>Ver contato</Modal.Header>
         <Modal.Body>
-          <FormControl>
-            <VStack space="4">
+          {!showForm && (
+            <VStack space="2" justifyContent="center" alignItems="center">
+              <Avatar>
+                {currentContact?.fullName
+                  .split(" ")
+                  .map((e) => e.split("")[0])
+                  .join("")}
+              </Avatar>
+              <Heading>{currentContact?.fullName}</Heading>
+              <Text>{currentContact?.email}</Text>
+              <Text>{currentContact?.phoneNumber}</Text>
+              <Button
+                borderRadius="full"
+                bg="cyan.600"
+                onPress={() => setShowForm(true)}
+              >
+                <Text
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                  color="gray.100"
+                >
+                  Editar contato
+                </Text>
+              </Button>
+            </VStack>
+          )}
+
+          {showForm && (
+            <VStack space="2">
               <Stack>
                 <FormControl.Label>Nome</FormControl.Label>
                 <Controller
@@ -71,7 +88,6 @@ export const ModalContact = () => {
                     <Input
                       variant="rounded"
                       type="text"
-                      placeholder="Nome do contato"
                       onChangeText={onChange}
                       value={value}
                     />
@@ -84,7 +100,6 @@ export const ModalContact = () => {
                   * {errors.fullName.message}
                 </Text>
               )}
-
               <Stack>
                 <FormControl.Label>Email</FormControl.Label>
                 <Controller
@@ -93,7 +108,6 @@ export const ModalContact = () => {
                     <Input
                       variant="rounded"
                       type="text"
-                      placeholder="Email do contato"
                       onChangeText={onChange}
                       value={value}
                     />
@@ -106,7 +120,6 @@ export const ModalContact = () => {
                   * {errors.email.message}
                 </Text>
               )}
-
               <Stack>
                 <FormControl.Label>Telefone</FormControl.Label>
                 <Controller
@@ -115,7 +128,6 @@ export const ModalContact = () => {
                     <Input
                       variant="rounded"
                       type="text"
-                      placeholder="Digite o telefone do contato"
                       onChangeText={onChange}
                       value={value}
                     />
@@ -123,12 +135,11 @@ export const ModalContact = () => {
                   name="phoneNumber"
                 />
               </Stack>
-              {errors.email && (
+              {errors.phoneNumber && (
                 <Text color="red.400" fontSize="sm">
-                  * {errors.email.message}
+                  * {errors.phoneNumber.message}
                 </Text>
               )}
-
               <Button
                 borderRadius="full"
                 bg="cyan.600"
@@ -139,11 +150,11 @@ export const ModalContact = () => {
                   textTransform="uppercase"
                   color="gray.100"
                 >
-                  Adicionar contato
+                  Confirmar atualizações
                 </Text>
               </Button>
             </VStack>
-          </FormControl>
+          )}
         </Modal.Body>
       </Modal.Content>
     </Modal>

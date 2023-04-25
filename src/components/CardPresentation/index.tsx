@@ -1,10 +1,9 @@
 import { Box, Button, Heading, Stack, Text } from "native-base"
+import { useAuthContext } from "../../contexts/auth"
 
-interface CardPresentationProps {
-  toggleCard(card: string): void
-}
+export const CardPresentation = () => {
+  const { toggleCard } = useAuthContext()
 
-export const CardPresentation = ({ toggleCard }: CardPresentationProps) => {
   return (
     <Box bg="gray.100" p="4" borderRadius="lg">
       <Stack space="4">

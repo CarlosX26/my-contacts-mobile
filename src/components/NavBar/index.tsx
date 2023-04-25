@@ -4,7 +4,7 @@ import { useUserContext } from "../../contexts/user"
 
 export const NavBar = () => {
   const { logout } = useAuthContext()
-  const { setShowModal } = useUserContext()
+  const { setShowModal, user } = useUserContext()
 
   return (
     <Box
@@ -19,7 +19,12 @@ export const NavBar = () => {
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <Avatar bg="green.400">CJ</Avatar>
+              <Avatar bg="green.400">
+                {user?.fullName
+                  .split(" ")
+                  .map((e) => e.split("")[0])
+                  .join("")}
+              </Avatar>
             </Pressable>
           )
         }}
