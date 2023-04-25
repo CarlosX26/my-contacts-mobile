@@ -12,7 +12,7 @@ import { useContactsContext } from "../../contexts/contacts"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-const ContactSchema = z.object({
+export const ContactSchema = z.object({
   fullName: z
     .string({
       required_error: "Campo vazio",
@@ -38,7 +38,8 @@ const ContactSchema = z.object({
 export type ContactSchema = z.infer<typeof ContactSchema>
 
 export const ModalContact = () => {
-  const { createContact, showModal, setShowModal } = useContactsContext()
+  const { createContact, showModalNewContact, setShowModalNewContact } =
+    useContactsContext()
   const {
     control,
     handleSubmit,
@@ -52,7 +53,10 @@ export const ModalContact = () => {
   }
 
   return (
-    <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+    <Modal
+      isOpen={showModalNewContact}
+      onClose={() => setShowModalNewContact(false)}
+    >
       <Modal.Content marginBottom="auto" top="20">
         <Modal.CloseButton />
         <Modal.Header>Adicionar contato</Modal.Header>
