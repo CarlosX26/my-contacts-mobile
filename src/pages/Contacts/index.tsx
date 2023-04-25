@@ -4,6 +4,7 @@ import { NavBar } from "../../components/NavBar"
 import { ContactsProvider } from "../../contexts/contacts"
 import { ModalProfile } from "../../components/ModalProfile"
 import { ModalContact } from "../../components/ModalContact"
+import { ModalSeeContact } from "../../components/ModalSeeContact"
 
 export const Contacts = () => {
   return (
@@ -12,6 +13,7 @@ export const Contacts = () => {
         <NavBar />
         <ContactList />
         <ModalContact />
+        <ModalSeeContact />
       </ContactsProvider>
       <ModalProfile />
     </View>
