@@ -7,9 +7,14 @@ import api from "../services/api"
 interface ContactsContext {
   contacts: Contact[]
   createContact(contactData: ContactSchema): Promise<void>
-  showModal: boolean
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  showModalNewContact: boolean
+  showModalSeeContact: boolean
+  currentContact: Contact | undefined
+  setShowModalNewContact: React.Dispatch<React.SetStateAction<boolean>>
+  setShowModalSeeContact: React.Dispatch<React.SetStateAction<boolean>>
   deleteContact(contactId: string): Promise<void>
+  selectContact(contact: Contact): void
+  updateContact(contactId: string, contactData: ContactSchema): Promise<void>
 }
 
 interface ContactsProviderProps {
@@ -28,7 +33,9 @@ const contactsContext = createContext({} as ContactsContext)
 
 const ContactsProvider = ({ children }: ContactsProviderProps) => {
   const [contacts, setContacts] = useState<Contact[]>([])
-  const [showModal, setShowModal] = useState(false)
+  const [currentContact, setCurrentContact] = useState<Contact>()
+  const [showModalNewContact, setShowModalNewContact] = useState(false)
+  const [showModalSeeContact, setShowModalSeeContact] = useState(false)
   const { navigate } = useNavigation()
 
   useEffect(() => {
@@ -36,6 +43,11 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
       await getContacts()
     })()
   }, [])
+
+  const selectContact = (contact: Contact): void => {
+    setCurrentContact(contact)
+    setShowModalSeeContact(true)
+  }
 
   const getContacts = async (): Promise<void> => {
     try {
@@ -61,7 +73,7 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
         },
       })
       setContacts([...contacts, data])
-      setShowModal(false)
+      setShowModalNewContact(false)
     } catch (error) {
       console.log(error)
     }
@@ -82,14 +94,40 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
     }
   }
 
+  const updateContact = async (
+    contactId: string,
+    contactData: ContactSchema
+  ): Promise<void> => {
+    try {
+      const token = await AsyncStorage.getItem("@myContactsToken")
+      const { data } = await api.patch(`/contacts/${contactId}`, contactData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const updatedContact = contacts.map((e) =>
+        e.id === contactId ? data : e
+      )
+      setContacts(updatedContact)
+      setShowModalSeeContact(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <contactsContext.Provider
       value={{
         contacts,
+        currentContact,
         createContact,
-        showModal,
-        setShowModal,
+        showModalNewContact,
+        setShowModalNewContact,
         deleteContact,
+        showModalSeeContact,
+        setShowModalSeeContact,
+        selectContact,
+        updateContact,
       }}
     >
       {children}
