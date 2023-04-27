@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import api from "../services/api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from "@react-navigation/native"
+import { UpdateSchema } from "../components/ModalProfile"
 
 interface User {
   fullName: string
@@ -15,6 +16,7 @@ interface UserContext {
   user: User | undefined
   showModal: boolean
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  updateUser(dataUser: UpdateSchema): Promise<void>
 }
 
 interface UserProviderProps {
@@ -52,8 +54,24 @@ const UserProvider = ({ children }: UserProviderProps) => {
     }
   }
 
+  const updateUser = async (dataUser: UpdateSchema) => {
+    try {
+      const token = await AsyncStorage.getItem("@myContactsToken")
+
+      const { data } = await api.patch("/clients/profile", dataUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setUser(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <userContext.Provider value={{ showModal, setShowModal, user }}>
+    <userContext.Provider value={{ showModal, setShowModal, user, updateUser }}>
       {children}
     </userContext.Provider>
   )
