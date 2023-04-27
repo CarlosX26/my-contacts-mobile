@@ -1,20 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NativeBaseProvider, StatusBar } from "native-base"
+import { useFonts } from "expo-font"
+import { theme } from "./src/styles/theme"
+import { Routes } from "./src/routes"
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [fontsLoaded] = useFonts({
+    "Rubik-Regular": require("./assets/fonts/Rubik-Regular.ttf"),
+    "Rubik-Italic": require("./assets/fonts/Rubik-Italic.ttf"),
+    "Rubik-SemiBold": require("./assets/fonts/Rubik-SemiBold.ttf"),
+    "Rubik-Bold": require("./assets/fonts/Rubik-Bold.ttf"),
+  })
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!fontsLoaded) {
+    return null
+  }
+
+  return (
+    <NativeBaseProvider theme={theme}>
+      <StatusBar />
+      <Routes />
+    </NativeBaseProvider>
+  )
+}
