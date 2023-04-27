@@ -1,4 +1,4 @@
-import { Box, Button, FlatList, Icon } from "native-base"
+import { Box, Fab, FlatList, Icon } from "native-base"
 import { CardContact } from "../CardContact"
 import { useContactsContext } from "../../contexts/contacts"
 import { Feather } from "@expo/vector-icons"
@@ -15,17 +15,10 @@ export const ContactList = () => {
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <Box h="4" />}
       />
-      <Button
-        position="absolute"
-        w="16"
-        h="16"
-        bottom="4"
-        right="4"
-        borderRadius="full"
+      <Fab
         onPress={() => setShowModalNewContact(true)}
-      >
-        <Icon as={Feather} name="user-plus" color="gray.100" size="xl" />
-      </Button>
+        icon={<Icon as={Feather} name="user-plus" color="gray.100" size="xl" />}
+      />
     </Box>
   )
 }
