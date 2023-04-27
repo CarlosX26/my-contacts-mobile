@@ -39,7 +39,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       await AsyncStorage.setItem("@myContactsToken", data.token)
       navigate("Contacts")
     } catch (error) {
-      console.log(error)
+      toast.show({
+        title: "Email ou senha inválidos",
+        bg: "red.500",
+      })
     }
   }
 
