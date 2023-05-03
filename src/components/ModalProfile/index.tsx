@@ -13,43 +13,9 @@ import {
 import { useUserContext } from "../../contexts/user"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-const UpdateSchema = z
-  .object({
-    fullName: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .min(3, "Mínimo 3 caractere")
-      .max(128, "Máximo 128 caractere"),
-    email: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .email({
-        message: "Email inválido",
-      }),
-    phoneNumber: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .min(11, "Número inválido")
-      .max(11, "Número inválido"),
-    password: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .regex(/[A-Z]/, "Mínimo de 1 letra maiúscula.")
-      .regex(/[a-z]/, "Mínimo de 1 letra minuscula.")
-      .regex(/(\d)/, "Mínimo 1 número.")
-      .regex(/(\W)|_/, "Mínimo de 1 caractere especial.")
-      .regex(/(.{8,})|_/, "Mínimo de 8 caracteres."),
-  })
-  .partial()
-
-export type UpdateSchema = z.infer<typeof UpdateSchema>
+import { UpdateUser } from "../../validations/types"
+import { UpdateUserForm } from "../../validations/userForm"
 
 type FieldName = "fullName" | "email" | "phoneNumber" | "password"
 
@@ -63,8 +29,8 @@ export const ModalProfile = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<UpdateSchema>({
-    resolver: zodResolver(UpdateSchema),
+  } = useForm<UpdateUser>({
+    resolver: zodResolver(UpdateUserForm),
   })
 
   const handleField = (field: string) => {
@@ -72,7 +38,7 @@ export const ModalProfile = () => {
     reset()
   }
 
-  const submit = async (data: UpdateSchema) => {
+  const submit = async (data: UpdateUser) => {
     await updateUser(data)
     setShowForm(false)
     setField("")
