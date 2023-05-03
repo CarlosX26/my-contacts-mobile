@@ -1,37 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { useNavigation } from "@react-navigation/native"
-import { ContactSchema } from "../components/ModalContact"
+import { RegisterContact, UpdateContact } from "../validations/types"
+import { Contact, ContactsContext, ProviderProps } from "./types"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../services/api"
 
-interface ContactsContext {
-  contacts: Contact[]
-  createContact(contactData: ContactSchema): Promise<void>
-  showModalNewContact: boolean
-  showModalSeeContact: boolean
-  currentContact: Contact | undefined
-  setShowModalNewContact: React.Dispatch<React.SetStateAction<boolean>>
-  setShowModalSeeContact: React.Dispatch<React.SetStateAction<boolean>>
-  deleteContact(contactId: string): Promise<void>
-  selectContact(contact: Contact): void
-  updateContact(contactId: string, contactData: ContactSchema): Promise<void>
-}
-
-interface ContactsProviderProps {
-  children: React.ReactNode
-}
-
-export interface Contact {
-  id: string
-  fullName: string
-  email: string
-  phoneNumber: string
-  createdAt: string
-}
-
 const contactsContext = createContext({} as ContactsContext)
 
-const ContactsProvider = ({ children }: ContactsProviderProps) => {
+const ContactsProvider = ({ children }: ProviderProps) => {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [currentContact, setCurrentContact] = useState<Contact>()
   const [showModalNewContact, setShowModalNewContact] = useState(false)
@@ -64,7 +40,7 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
     }
   }
 
-  const createContact = async (contactData: ContactSchema): Promise<void> => {
+  const createContact = async (contactData: RegisterContact): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")
       const { data } = await api.post("/contacts", contactData, {
@@ -96,7 +72,7 @@ const ContactsProvider = ({ children }: ContactsProviderProps) => {
 
   const updateContact = async (
     contactId: string,
-    contactData: ContactSchema
+    contactData: UpdateContact
   ): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")

@@ -1,31 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import api from "../services/api"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from "@react-navigation/native"
-import { UpdateSchema } from "../components/ModalProfile"
-
-interface User {
-  fullName: string
-  email: string
-  phoneNumber: string
-  createdAt: string
-  id: string
-}
-
-interface UserContext {
-  user: User | undefined
-  showModal: boolean
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-  updateUser(dataUser: UpdateSchema): Promise<void>
-}
-
-interface UserProviderProps {
-  children: React.ReactNode
-}
+import { User, UserContext, ProviderProps } from "./types"
+import { UpdateUser } from "../validations/types"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import api from "../services/api"
 
 const userContext = createContext({} as UserContext)
 
-const UserProvider = ({ children }: UserProviderProps) => {
+const UserProvider = ({ children }: ProviderProps) => {
   const [showModal, setShowModal] = useState(false)
   const [user, setUser] = useState<User>()
   const { navigate } = useNavigation()
@@ -36,7 +18,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
     })()
   }, [])
 
-  const getUser = async () => {
+  const getUser = async (): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")
 
@@ -54,7 +36,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
     }
   }
 
-  const updateUser = async (dataUser: UpdateSchema) => {
+  const updateUser = async (dataUser: UpdateUser): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")
 
