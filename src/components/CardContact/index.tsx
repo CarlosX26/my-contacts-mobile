@@ -10,8 +10,9 @@ import {
   AlertDialog,
 } from "native-base"
 import { Feather } from "@expo/vector-icons"
-import { Contact, useContactsContext } from "../../contexts/contacts"
+import { useContactsContext } from "../../contexts/contacts"
 import { useRef, useState } from "react"
+import { Contact } from "../../contexts/types"
 
 interface CardContactProps {
   contact: Contact

@@ -11,9 +11,10 @@ import {
 } from "native-base"
 import { useContactsContext } from "../../contexts/contacts"
 import { Controller, useForm } from "react-hook-form"
-import { ContactSchema } from "../ModalContact"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
+import { UpdateContact } from "../../validations/types"
+import { UpdateContactForm } from "../../validations/contactForm"
 
 export const ModalSeeContact = () => {
   const {
@@ -28,8 +29,8 @@ export const ModalSeeContact = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ContactSchema>({
-    resolver: zodResolver(ContactSchema),
+  } = useForm<UpdateContact>({
+    resolver: zodResolver(UpdateContactForm),
     values: {
       email: currentContact?.email!,
       fullName: currentContact?.fullName!,
@@ -37,7 +38,7 @@ export const ModalSeeContact = () => {
     },
   })
 
-  const submit = async (data: ContactSchema) => {
+  const submit = async (data: UpdateContact) => {
     await updateContact(currentContact?.id!, data)
     setShowForm(false)
   }
