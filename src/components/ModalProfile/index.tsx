@@ -63,11 +63,7 @@ export const ModalProfile = () => {
                 <Heading>{user?.fullName}</Heading>
                 <Text>{user?.email}</Text>
                 <Text>{user?.phoneNumber}</Text>
-                <Button
-                  borderRadius="full"
-                  bg="cyan.600"
-                  onPress={() => setShowForm(true)}
-                >
+                <Button onPress={() => setShowForm(true)}>
                   <Text
                     fontWeight="bold"
                     textTransform="uppercase"
@@ -100,7 +96,6 @@ export const ModalProfile = () => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <Input
-                          variant="rounded"
                           type={field === "password" ? "password" : "text"}
                           onChangeText={onChange}
                           value={value}
@@ -117,11 +112,7 @@ export const ModalProfile = () => {
                   </Text>
                 )}
 
-                <Button
-                  borderRadius="full"
-                  bg="cyan.600"
-                  onPress={handleSubmit(submit)}
-                >
+                <Button onPress={handleSubmit(submit)}>
                   <Text
                     fontWeight="bold"
                     textTransform="uppercase"
