@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation, StackActions } from "@react-navigation/native"
 import { RegisterContact, UpdateContact } from "../validations/types"
 import { Contact, ContactsContext, ProviderProps } from "./types"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -12,7 +12,7 @@ const ContactsProvider = ({ children }: ProviderProps) => {
   const [currentContact, setCurrentContact] = useState<Contact>()
   const [showModalNewContact, setShowModalNewContact] = useState(false)
   const [showModalSeeContact, setShowModalSeeContact] = useState(false)
-  const { navigate } = useNavigation()
+  const { dispatch } = useNavigation()
 
   useEffect(() => {
     ;(async () => {
@@ -35,7 +35,7 @@ const ContactsProvider = ({ children }: ProviderProps) => {
       })
       setContacts(data)
     } catch (error) {
-      navigate("Home")
+      dispatch(StackActions.replace("Home"))
       console.log(error)
     }
   }

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation, StackActions } from "@react-navigation/native"
 import { useToast } from "native-base"
 import { Login, RegisterUser } from "../validations/types"
 import { AuthContext, ProviderProps } from "./types"
@@ -11,7 +11,7 @@ const authContext = createContext({} as AuthContext)
 const AuthProvider = ({ children }: ProviderProps) => {
   const [card, setCard] = useState("")
   const toast = useToast()
-  const { navigate } = useNavigation()
+  const { dispatch } = useNavigation()
 
   const toggleCard = (card: string) => {
     setCard(card)
@@ -25,8 +25,9 @@ const AuthProvider = ({ children }: ProviderProps) => {
         },
       })
       await AsyncStorage.setItem("@myContactsToken", data.token)
-      navigate("Contacts")
+      dispatch(StackActions.replace("Contacts"))
     } catch (error) {
+      console.log(error)
       toast.show({
         title: "Email ou senha inválidos",
         bg: "red.500",
@@ -52,7 +53,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
 
   const logout = async (): Promise<void> => {
     await AsyncStorage.clear()
-    navigate("Home")
+    dispatch(StackActions.replace("Home"))
   }
 
   return (

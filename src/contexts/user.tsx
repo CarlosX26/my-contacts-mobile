@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation, StackActions } from "@react-navigation/native"
 import { User, UserContext, ProviderProps } from "./types"
 import { UpdateUser } from "../validations/types"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -10,28 +10,29 @@ const userContext = createContext({} as UserContext)
 const UserProvider = ({ children }: ProviderProps) => {
   const [showModal, setShowModal] = useState(false)
   const [user, setUser] = useState<User>()
-  const { navigate } = useNavigation()
+  const { dispatch } = useNavigation()
 
   useEffect(() => {
     ;(async () => {
-      await getUser()
+      const token = await AsyncStorage.getItem("@myContactsToken")
+
+      if (token) {
+        await getUser(token)
+      }
     })()
   }, [])
 
-  const getUser = async (): Promise<void> => {
+  const getUser = async (token: string): Promise<void> => {
     try {
-      const token = await AsyncStorage.getItem("@myContactsToken")
-
       const { data } = await api.get("/clients/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-
       setUser(data)
-      navigate("Contacts")
+      dispatch(StackActions.replace("Contacts"))
     } catch (error) {
-      navigate("Home")
+      dispatch(StackActions.replace("Home"))
       console.log(error)
     }
   }
