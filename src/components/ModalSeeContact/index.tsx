@@ -63,11 +63,7 @@ export const ModalSeeContact = () => {
               <Heading>{currentContact?.fullName}</Heading>
               <Text>{currentContact?.email}</Text>
               <Text>{currentContact?.phoneNumber}</Text>
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={() => setShowForm(true)}
-              >
+              <Button onPress={() => setShowForm(true)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"
@@ -86,12 +82,7 @@ export const ModalSeeContact = () => {
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <Input
-                      variant="rounded"
-                      type="text"
-                      onChangeText={onChange}
-                      value={value}
-                    />
+                    <Input type="text" onChangeText={onChange} value={value} />
                   )}
                   name="fullName"
                 />
@@ -106,12 +97,7 @@ export const ModalSeeContact = () => {
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <Input
-                      variant="rounded"
-                      type="text"
-                      onChangeText={onChange}
-                      value={value}
-                    />
+                    <Input type="text" onChangeText={onChange} value={value} />
                   )}
                   name="email"
                 />
@@ -126,12 +112,7 @@ export const ModalSeeContact = () => {
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <Input
-                      variant="rounded"
-                      type="text"
-                      onChangeText={onChange}
-                      value={value}
-                    />
+                    <Input type="text" onChangeText={onChange} value={value} />
                   )}
                   name="phoneNumber"
                 />
@@ -141,11 +122,7 @@ export const ModalSeeContact = () => {
                   * {errors.phoneNumber.message}
                 </Text>
               )}
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"

@@ -45,7 +45,6 @@ export const ModalContact = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Nome do contato"
                       onChangeText={onChange}
@@ -67,7 +66,6 @@ export const ModalContact = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Email do contato"
                       onChangeText={onChange}
@@ -89,7 +87,6 @@ export const ModalContact = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite o telefone do contato"
                       onChangeText={onChange}
@@ -105,11 +102,7 @@ export const ModalContact = () => {
                 </Text>
               )}
 
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"

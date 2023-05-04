@@ -47,7 +47,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu nome"
                       onChangeText={onChange}
@@ -68,7 +67,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu email"
                       onChangeText={onChange}
@@ -89,7 +87,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu número de telefone"
                       onChangeText={onChange}
@@ -110,7 +107,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="password"
                       placeholder="Digite sua senha"
                       onChangeText={onChange}
@@ -126,11 +122,7 @@ export const CardRegister = () => {
                 </Text>
               )}
 
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"

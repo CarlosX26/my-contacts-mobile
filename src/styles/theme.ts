@@ -22,6 +22,26 @@ const theme = extendTheme({
     body: "Rubik",
     mono: "Rubik",
   },
+
+  components: {
+    Input: {
+      defaultProps: {
+        variant: "rounded",
+        fontSize: "md",
+      },
+    },
+    Button: {
+      variants: {
+        default: {
+          borderRadius: "full",
+          bg: "cyan.600",
+        },
+      },
+      defaultProps: {
+        variant: "default",
+      },
+    },
+  },
 })
 
 export { theme }
