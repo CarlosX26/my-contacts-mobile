@@ -22,20 +22,12 @@ export const CardPresentation = () => {
 
           <Text>Gerencie seus contatos de um jeito inovador.</Text>
 
-          <Button
-            bg="cyan.600"
-            borderRadius="full"
-            onPress={() => toggleCard("login")}
-          >
+          <Button onPress={() => toggleCard("login")}>
             <Text fontWeight="bold" textTransform="uppercase" color="gray.100">
               Login
             </Text>
           </Button>
-          <Button
-            bg="cyan.600"
-            borderRadius="full"
-            onPress={() => toggleCard("register")}
-          >
+          <Button onPress={() => toggleCard("register")}>
             <Text fontWeight="bold" textTransform="uppercase" color="gray.100">
               Inscreva-se
             </Text>
