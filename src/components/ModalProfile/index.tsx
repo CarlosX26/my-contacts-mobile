@@ -19,10 +19,20 @@ import { UpdateUserForm } from "../../validations/userForm"
 
 type FieldName = "fullName" | "email" | "phoneNumber" | "password"
 
+interface Placeholders {
+  [key: string]: string
+}
+
 export const ModalProfile = () => {
   const { showModal, setShowModal, user, updateUser } = useUserContext()
   const [showForm, setShowForm] = useState(false)
   const [field, setField] = useState("")
+
+  const closeModal = () => {
+    setShowModal(false)
+    setShowForm(false)
+    setField("")
+  }
 
   const {
     control,
@@ -40,13 +50,19 @@ export const ModalProfile = () => {
 
   const submit = async (data: UpdateUser) => {
     await updateUser(data)
-    setShowForm(false)
-    setField("")
+    closeModal()
+  }
+
+  const placeholders: Placeholders = {
+    fullName: "Digite seu nome",
+    email: "Digite seu email",
+    phoneNumber: "Digite seu número de telefone",
+    password: "Digite sua senha",
   }
 
   return (
     <Center>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+      <Modal isOpen={showModal} onClose={closeModal}>
         <Modal.Content marginBottom="auto" top="20">
           <Modal.CloseButton />
           <Modal.Header>Perfil</Modal.Header>
@@ -99,6 +115,7 @@ export const ModalProfile = () => {
                           type={field === "password" ? "password" : "text"}
                           onChangeText={onChange}
                           value={value}
+                          placeholder={placeholders[field]}
                         />
                       )}
                       name={field as FieldName}

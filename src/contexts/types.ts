@@ -41,9 +41,10 @@ interface ContactsContext {
   createContact(contactData: RegisterContact): Promise<void>
   showModalNewContact: boolean
   showModalSeeContact: boolean
-  currentContact: Contact | undefined
+  currentContact: Contact | null
   setShowModalNewContact: React.Dispatch<React.SetStateAction<boolean>>
   setShowModalSeeContact: React.Dispatch<React.SetStateAction<boolean>>
+  setCurrentContact: React.Dispatch<React.SetStateAction<Contact | null>>
   deleteContact(contactId: string): Promise<void>
   selectContact(contact: Contact): void
   updateContact(contactId: string, contactData: UpdateContact): Promise<void>

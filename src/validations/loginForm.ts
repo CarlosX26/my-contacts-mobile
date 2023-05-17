@@ -5,12 +5,13 @@ const LoginForm = z.object({
     .string({
       required_error: "Campo vazio",
     })
+    .trim()
     .email("Email inválido"),
   password: z
     .string({
       required_error: "Campo vazio",
     })
-    .nonempty(),
+    .nonempty("Campo vazio"),
 })
 
 export { LoginForm }
