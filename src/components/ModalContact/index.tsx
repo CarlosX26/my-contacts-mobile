@@ -20,12 +20,14 @@ export const ModalContact = () => {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<RegisterContact>({
     resolver: zodResolver(RegisterContactForm),
   })
 
   const submit = async (data: RegisterContact) => {
-    createContact(data)
+    await createContact(data)
+    reset()
   }
 
   return (
