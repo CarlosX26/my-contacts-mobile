@@ -6,7 +6,7 @@ Esta é uma aplicação desenvolvida anteriormente utilizando React no frontend 
 
 ## Screenshots
 
-<div style="display: grid; gap: 16px; grid-template-columns: repeat(6, 1fr);">
+<div>
   <img src="./screens/screen-01.jpeg" alt="screenshot" width="200px" />
   <img src="./screens/screen-02.jpeg" alt="screenshot" width="200px" />
   <img src="./screens/screen-03.jpeg" alt="screenshot" width="200px" />
