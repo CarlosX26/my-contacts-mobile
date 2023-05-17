@@ -22,6 +22,7 @@ export const ModalSeeContact = () => {
     setShowModalSeeContact,
     currentContact,
     updateContact,
+    setCurrentContact,
   } = useContactsContext()
   const [showForm, setShowForm] = useState(false)
 
@@ -38,16 +39,19 @@ export const ModalSeeContact = () => {
     },
   })
 
+  const closeModal = () => {
+    setShowForm(false)
+    setShowModalSeeContact(false)
+    setCurrentContact(null)
+  }
+
   const submit = async (data: UpdateContact) => {
     await updateContact(currentContact?.id!, data)
-    setShowForm(false)
+    closeModal()
   }
 
   return (
-    <Modal
-      isOpen={showModalSeeContact}
-      onClose={() => setShowModalSeeContact(false)}
-    >
+    <Modal isOpen={showModalSeeContact} onClose={closeModal}>
       <Modal.Content marginBottom="auto" top="20">
         <Modal.CloseButton />
         <Modal.Header>Ver contato</Modal.Header>
