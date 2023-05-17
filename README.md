@@ -7,10 +7,12 @@ Esta é uma aplicação desenvolvida anteriormente utilizando React no frontend 
 ## Screenshots
 
 <div style="display:grid; grid-template-column: repeat(3, 1fr);">
-  <img src="./tela_1.png" alt="screenshot" width="320px"/>
-  <img src="./tela_2.png" alt="screenshot" width="320px" />
-  <img src="./tela_3.png" alt="screenshot" width="320px" />
-  <img src="./tela_4.png" alt="screenshot" width="320px" />
+  <img src="./screens/screen-01.jpeg" alt="screenshot" width="320px"/>
+  <img src="./screens/screen-02.jpeg" alt="screenshot" width="320px"/>
+  <img src="./screens/screen-03.jpeg" alt="screenshot" width="320px"/>
+  <img src="./screens/screen-04.jpeg" alt="screenshot" width="320px"/>
+  <img src="./screens/screen-05.jpeg" alt="screenshot" width="320px"/>
+  <img src="./screens/screen-06.jpeg" alt="screenshot" width="320px"/>
 </div>
 
 
