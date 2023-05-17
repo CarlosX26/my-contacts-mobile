@@ -85,8 +85,9 @@ export const CardContact = ({ contact }: CardContactProps) => {
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button
-                variant="unstyled"
+                variant="outline"
                 colorScheme="coolGray"
+                borderRadius="full"
                 onPress={onClose}
                 ref={cancelRef}
               >
@@ -94,6 +95,8 @@ export const CardContact = ({ contact }: CardContactProps) => {
               </Button>
               <Button
                 colorScheme="danger"
+                variant="solid"
+                borderRadius="full"
                 onPress={() => {
                   onClose()
                   deleteContact(contact.id)
