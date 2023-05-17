@@ -9,7 +9,7 @@ const contactsContext = createContext({} as ContactsContext)
 
 const ContactsProvider = ({ children }: ProviderProps) => {
   const [contacts, setContacts] = useState<Contact[]>([])
-  const [currentContact, setCurrentContact] = useState<Contact>()
+  const [currentContact, setCurrentContact] = useState<Contact | null>(null)
   const [showModalNewContact, setShowModalNewContact] = useState(false)
   const [showModalSeeContact, setShowModalSeeContact] = useState(false)
   const { dispatch } = useNavigation()
@@ -96,6 +96,7 @@ const ContactsProvider = ({ children }: ProviderProps) => {
       value={{
         contacts,
         currentContact,
+        setCurrentContact,
         createContact,
         showModalNewContact,
         setShowModalNewContact,
