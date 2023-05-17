@@ -8,26 +8,13 @@ import {
   PresenceTransition,
   Stack,
   Text,
+  VStack,
 } from "native-base"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { useAuthContext } from "../../contexts/auth"
-
-const LoginSchema = z.object({
-  email: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .email("Email inválido"),
-  password: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .nonempty(),
-})
-
-export type Login = z.infer<typeof LoginSchema>
+import { LoginForm } from "../../validations/loginForm"
+import { Login } from "../../validations/types"
 
 export const CardLogin = () => {
   const { login, toggleCard } = useAuthContext()
@@ -37,7 +24,7 @@ export const CardLogin = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Login>({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(LoginForm),
   })
 
   const submit = (data: Login) => {
@@ -54,14 +41,13 @@ export const CardLogin = () => {
         <Stack space="4">
           <Heading>Login</Heading>
           <FormControl>
-            <Stack space="4">
+            <VStack space="4">
               <Stack>
                 <FormControl.Label>Email</FormControl.Label>
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu email"
                       onChangeText={onChange}
@@ -83,7 +69,6 @@ export const CardLogin = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="password"
                       placeholder="Digite sua senha"
                       onChangeText={onChange}
@@ -99,11 +84,7 @@ export const CardLogin = () => {
                 </Text>
               )}
 
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"
@@ -122,7 +103,7 @@ export const CardLogin = () => {
                   </Text>
                 </Link>
               </Box>
-            </Stack>
+            </VStack>
           </FormControl>
         </Stack>
       </Box>

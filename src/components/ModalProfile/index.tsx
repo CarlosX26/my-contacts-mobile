@@ -13,58 +13,34 @@ import {
 import { useUserContext } from "../../contexts/user"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-const UpdateSchema = z
-  .object({
-    fullName: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .min(3, "Mínimo 3 caractere")
-      .max(128, "Máximo 128 caractere"),
-    email: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .email({
-        message: "Email inválido",
-      }),
-    phoneNumber: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .min(11, "Número inválido")
-      .max(11, "Número inválido"),
-    password: z
-      .string({
-        required_error: "Campo vazio",
-      })
-      .regex(/[A-Z]/, "Mínimo de 1 letra maiúscula.")
-      .regex(/[a-z]/, "Mínimo de 1 letra minuscula.")
-      .regex(/(\d)/, "Mínimo 1 número.")
-      .regex(/(\W)|_/, "Mínimo de 1 caractere especial.")
-      .regex(/(.{8,})|_/, "Mínimo de 8 caracteres."),
-  })
-  .partial()
-
-export type UpdateSchema = z.infer<typeof UpdateSchema>
+import { UpdateUser } from "../../validations/types"
+import { UpdateUserForm } from "../../validations/userForm"
 
 type FieldName = "fullName" | "email" | "phoneNumber" | "password"
+
+interface Placeholders {
+  [key: string]: string
+}
 
 export const ModalProfile = () => {
   const { showModal, setShowModal, user, updateUser } = useUserContext()
   const [showForm, setShowForm] = useState(false)
   const [field, setField] = useState("")
 
+  const closeModal = () => {
+    setShowModal(false)
+    setShowForm(false)
+    setField("")
+  }
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<UpdateSchema>({
-    resolver: zodResolver(UpdateSchema),
+  } = useForm<UpdateUser>({
+    resolver: zodResolver(UpdateUserForm),
   })
 
   const handleField = (field: string) => {
@@ -72,15 +48,21 @@ export const ModalProfile = () => {
     reset()
   }
 
-  const submit = async (data: UpdateSchema) => {
+  const submit = async (data: UpdateUser) => {
     await updateUser(data)
-    setShowForm(false)
-    setField("")
+    closeModal()
+  }
+
+  const placeholders: Placeholders = {
+    fullName: "Digite seu nome",
+    email: "Digite seu email",
+    phoneNumber: "Digite seu número de telefone",
+    password: "Digite sua senha",
   }
 
   return (
     <Center>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+      <Modal isOpen={showModal} onClose={closeModal}>
         <Modal.Content marginBottom="auto" top="20">
           <Modal.CloseButton />
           <Modal.Header>Perfil</Modal.Header>
@@ -97,11 +79,7 @@ export const ModalProfile = () => {
                 <Heading>{user?.fullName}</Heading>
                 <Text>{user?.email}</Text>
                 <Text>{user?.phoneNumber}</Text>
-                <Button
-                  borderRadius="full"
-                  bg="cyan.600"
-                  onPress={() => setShowForm(true)}
-                >
+                <Button onPress={() => setShowForm(true)}>
                   <Text
                     fontWeight="bold"
                     textTransform="uppercase"
@@ -134,10 +112,10 @@ export const ModalProfile = () => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <Input
-                          variant="rounded"
                           type={field === "password" ? "password" : "text"}
                           onChangeText={onChange}
                           value={value}
+                          placeholder={placeholders[field]}
                         />
                       )}
                       name={field as FieldName}
@@ -151,11 +129,7 @@ export const ModalProfile = () => {
                   </Text>
                 )}
 
-                <Button
-                  borderRadius="full"
-                  bg="cyan.600"
-                  onPress={handleSubmit(submit)}
-                >
+                <Button onPress={handleSubmit(submit)}>
                   <Text
                     fontWeight="bold"
                     textTransform="uppercase"

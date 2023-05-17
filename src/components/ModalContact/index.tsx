@@ -7,35 +7,11 @@ import {
   VStack,
   Text,
 } from "native-base"
-import { z } from "zod"
 import { useContactsContext } from "../../contexts/contacts"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-
-export const ContactSchema = z.object({
-  fullName: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .max(128, "Máximo 128 caractere")
-    .nonempty("Campo vazio"),
-  email: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .email()
-    .max(128, "Máximo 128 caractere")
-    .nonempty("Campo vazio"),
-  phoneNumber: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .min(11, "Número inválido")
-    .max(11, "Número inválido")
-    .nonempty("Campo vazio"),
-})
-
-export type ContactSchema = z.infer<typeof ContactSchema>
+import { RegisterContact } from "../../validations/types"
+import { RegisterContactForm } from "../../validations/contactForm"
 
 export const ModalContact = () => {
   const { createContact, showModalNewContact, setShowModalNewContact } =
@@ -44,12 +20,14 @@ export const ModalContact = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ContactSchema>({
-    resolver: zodResolver(ContactSchema),
+    reset,
+  } = useForm<RegisterContact>({
+    resolver: zodResolver(RegisterContactForm),
   })
 
-  const submit = async (data: ContactSchema) => {
-    createContact(data)
+  const submit = async (data: RegisterContact) => {
+    await createContact(data)
+    reset()
   }
 
   return (
@@ -69,7 +47,6 @@ export const ModalContact = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Nome do contato"
                       onChangeText={onChange}
@@ -91,7 +68,6 @@ export const ModalContact = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Email do contato"
                       onChangeText={onChange}
@@ -113,7 +89,6 @@ export const ModalContact = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite o telefone do contato"
                       onChangeText={onChange}
@@ -129,11 +104,7 @@ export const ModalContact = () => {
                 </Text>
               )}
 
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"

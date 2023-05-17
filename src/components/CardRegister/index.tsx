@@ -8,44 +8,13 @@ import {
   PresenceTransition,
   Stack,
   Text,
+  VStack,
 } from "native-base"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { useAuthContext } from "../../contexts/auth"
-
-const RegisterSchema = z.object({
-  fullName: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .min(3, "Mínimo 3 caractere")
-    .max(128, "Máximo 128 caractere"),
-  email: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .email({
-      message: "Email inválido",
-    }),
-  phoneNumber: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .min(11, "Número inválido")
-    .max(11, "Número inválido"),
-  password: z
-    .string({
-      required_error: "Campo vazio",
-    })
-    .regex(/[A-Z]/, "Mínimo de 1 letra maiúscula.")
-    .regex(/[a-z]/, "Mínimo de 1 letra minuscula.")
-    .regex(/(\d)/, "Mínimo 1 número.")
-    .regex(/(\W)|_/, "Mínimo de 1 caractere especial.")
-    .regex(/(.{8,})|_/, "Mínimo de 8 caracteres."),
-})
-
-export type Register = z.infer<typeof RegisterSchema>
+import { RegisterUser } from "../../validations/types"
+import { RegisterUserForm } from "../../validations/userForm"
 
 export const CardRegister = () => {
   const { register, toggleCard } = useAuthContext()
@@ -53,11 +22,11 @@ export const CardRegister = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Register>({
-    resolver: zodResolver(RegisterSchema),
+  } = useForm<RegisterUser>({
+    resolver: zodResolver(RegisterUserForm),
   })
 
-  const submit = (data: Register) => {
+  const submit = (data: RegisterUser) => {
     register(data)
   }
 
@@ -71,14 +40,13 @@ export const CardRegister = () => {
         <Stack space="4">
           <Heading>Cadastro</Heading>
           <FormControl>
-            <Stack space="4">
+            <VStack space="4">
               <Stack>
                 <FormControl.Label>Nome</FormControl.Label>
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu nome"
                       onChangeText={onChange}
@@ -99,7 +67,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu email"
                       onChangeText={onChange}
@@ -120,7 +87,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="text"
                       placeholder="Digite seu número de telefone"
                       onChangeText={onChange}
@@ -141,7 +107,6 @@ export const CardRegister = () => {
                   control={control}
                   render={({ field: { onChange, value } }) => (
                     <Input
-                      variant="rounded"
                       type="password"
                       placeholder="Digite sua senha"
                       onChangeText={onChange}
@@ -157,11 +122,7 @@ export const CardRegister = () => {
                 </Text>
               )}
 
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"
@@ -180,7 +141,7 @@ export const CardRegister = () => {
                   </Text>
                 </Link>
               </Box>
-            </Stack>
+            </VStack>
           </FormControl>
         </Stack>
       </Box>

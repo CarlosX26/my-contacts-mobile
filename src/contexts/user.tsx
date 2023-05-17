@@ -1,60 +1,43 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import api from "../services/api"
+import { useNavigation, StackActions } from "@react-navigation/native"
+import { User, UserContext, ProviderProps } from "./types"
+import { UpdateUser } from "../validations/types"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { useNavigation } from "@react-navigation/native"
-import { UpdateSchema } from "../components/ModalProfile"
-
-interface User {
-  fullName: string
-  email: string
-  phoneNumber: string
-  createdAt: string
-  id: string
-}
-
-interface UserContext {
-  user: User | undefined
-  showModal: boolean
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-  updateUser(dataUser: UpdateSchema): Promise<void>
-}
-
-interface UserProviderProps {
-  children: React.ReactNode
-}
+import api from "../services/api"
 
 const userContext = createContext({} as UserContext)
 
-const UserProvider = ({ children }: UserProviderProps) => {
+const UserProvider = ({ children }: ProviderProps) => {
   const [showModal, setShowModal] = useState(false)
   const [user, setUser] = useState<User>()
-  const { navigate } = useNavigation()
+  const { dispatch } = useNavigation()
 
   useEffect(() => {
     ;(async () => {
-      await getUser()
+      const token = await AsyncStorage.getItem("@myContactsToken")
+
+      if (token) {
+        await getUser(token)
+      }
     })()
   }, [])
 
-  const getUser = async () => {
+  const getUser = async (token: string): Promise<void> => {
     try {
-      const token = await AsyncStorage.getItem("@myContactsToken")
-
       const { data } = await api.get("/clients/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-
       setUser(data)
-      navigate("Contacts")
+      dispatch(StackActions.replace("Contacts"))
     } catch (error) {
-      navigate("Home")
+      dispatch(StackActions.replace("Home"))
       console.log(error)
     }
   }
 
-  const updateUser = async (dataUser: UpdateSchema) => {
+  const updateUser = async (dataUser: UpdateUser): Promise<void> => {
     try {
       const token = await AsyncStorage.getItem("@myContactsToken")
 

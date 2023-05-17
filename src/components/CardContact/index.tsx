@@ -10,8 +10,9 @@ import {
   AlertDialog,
 } from "native-base"
 import { Feather } from "@expo/vector-icons"
-import { Contact, useContactsContext } from "../../contexts/contacts"
+import { useContactsContext } from "../../contexts/contacts"
 import { useRef, useState } from "react"
+import { Contact } from "../../contexts/types"
 
 interface CardContactProps {
   contact: Contact
@@ -84,8 +85,9 @@ export const CardContact = ({ contact }: CardContactProps) => {
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button
-                variant="unstyled"
+                variant="outline"
                 colorScheme="coolGray"
+                borderRadius="full"
                 onPress={onClose}
                 ref={cancelRef}
               >
@@ -93,6 +95,8 @@ export const CardContact = ({ contact }: CardContactProps) => {
               </Button>
               <Button
                 colorScheme="danger"
+                variant="solid"
+                borderRadius="full"
                 onPress={() => {
                   onClose()
                   deleteContact(contact.id)

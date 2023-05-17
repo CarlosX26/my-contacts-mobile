@@ -11,9 +11,10 @@ import {
 } from "native-base"
 import { useContactsContext } from "../../contexts/contacts"
 import { Controller, useForm } from "react-hook-form"
-import { ContactSchema } from "../ModalContact"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
+import { UpdateContact } from "../../validations/types"
+import { UpdateContactForm } from "../../validations/contactForm"
 
 export const ModalSeeContact = () => {
   const {
@@ -21,6 +22,7 @@ export const ModalSeeContact = () => {
     setShowModalSeeContact,
     currentContact,
     updateContact,
+    setCurrentContact,
   } = useContactsContext()
   const [showForm, setShowForm] = useState(false)
 
@@ -28,8 +30,8 @@ export const ModalSeeContact = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ContactSchema>({
-    resolver: zodResolver(ContactSchema),
+  } = useForm<UpdateContact>({
+    resolver: zodResolver(UpdateContactForm),
     values: {
       email: currentContact?.email!,
       fullName: currentContact?.fullName!,
@@ -37,16 +39,19 @@ export const ModalSeeContact = () => {
     },
   })
 
-  const submit = async (data: ContactSchema) => {
-    await updateContact(currentContact?.id!, data)
+  const closeModal = () => {
     setShowForm(false)
+    setShowModalSeeContact(false)
+    setCurrentContact(null)
+  }
+
+  const submit = async (data: UpdateContact) => {
+    await updateContact(currentContact?.id!, data)
+    closeModal()
   }
 
   return (
-    <Modal
-      isOpen={showModalSeeContact}
-      onClose={() => setShowModalSeeContact(false)}
-    >
+    <Modal isOpen={showModalSeeContact} onClose={closeModal}>
       <Modal.Content marginBottom="auto" top="20">
         <Modal.CloseButton />
         <Modal.Header>Ver contato</Modal.Header>
@@ -62,11 +67,7 @@ export const ModalSeeContact = () => {
               <Heading>{currentContact?.fullName}</Heading>
               <Text>{currentContact?.email}</Text>
               <Text>{currentContact?.phoneNumber}</Text>
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={() => setShowForm(true)}
-              >
+              <Button onPress={() => setShowForm(true)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"
@@ -85,12 +86,7 @@ export const ModalSeeContact = () => {
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <Input
-                      variant="rounded"
-                      type="text"
-                      onChangeText={onChange}
-                      value={value}
-                    />
+                    <Input type="text" onChangeText={onChange} value={value} />
                   )}
                   name="fullName"
                 />
@@ -105,12 +101,7 @@ export const ModalSeeContact = () => {
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <Input
-                      variant="rounded"
-                      type="text"
-                      onChangeText={onChange}
-                      value={value}
-                    />
+                    <Input type="text" onChangeText={onChange} value={value} />
                   )}
                   name="email"
                 />
@@ -125,12 +116,7 @@ export const ModalSeeContact = () => {
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
-                    <Input
-                      variant="rounded"
-                      type="text"
-                      onChangeText={onChange}
-                      value={value}
-                    />
+                    <Input type="text" onChangeText={onChange} value={value} />
                   )}
                   name="phoneNumber"
                 />
@@ -140,11 +126,7 @@ export const ModalSeeContact = () => {
                   * {errors.phoneNumber.message}
                 </Text>
               )}
-              <Button
-                borderRadius="full"
-                bg="cyan.600"
-                onPress={handleSubmit(submit)}
-              >
+              <Button onPress={handleSubmit(submit)}>
                 <Text
                   fontWeight="bold"
                   textTransform="uppercase"
